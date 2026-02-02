@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>동물상 테스트 | 인공지능이 보는 나의 동물상</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <header class="header">
+            <a href="index.html"
+                style="text-decoration: none; font-size: 1.5rem; position: absolute; left: 24px; top: 24px;">🏠</a>
+            <h1>동물상 테스트</h1>
+            <p class="subtitle">인공지능이 분석하는 나의 숨겨진 매력</p>
+        </header>
+
+        <main class="main-content">
+            <div class="upload-area" id="upload-area">
+                <input type="file" id="image-upload" accept="image/*" hidden>
+                <div class="upload-placeholder" id="upload-placeholder">
+                    <div class="icon-upload">📸</div>
+                    <p class="upload-text">사진을 올려놓거나 눌러서 업로드하세요</p>
+                    <p class="upload-subtext">데이터는 어디에도 저장되지 않습니다.</p>
+                </div>
+                <div class="image-preview" id="image-preview" hidden>
+                    <img id="preview-img" src="#" alt="Uploaded Image">
+                    <button type="button" class="remove-btn" onclick="removeImage()">다른 사진으로 재시도</button>
+                </div>
+            </div>
+
+            <div class="loading-area" id="loading-area" hidden>
+                <div class="spinner"></div>
+                <p>AI가 당신의 동물상을 분석 중입니다...</p>
+            </div>
+
+            <div class="result-area" id="result-area" hidden>
+                <div class="result-title">분석 결과</div>
+                <div id="label-container" class="result-bars"></div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>© 2026 Animal Face Test. AI Model by Teachable Machine.</p>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+    <script
+        src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
