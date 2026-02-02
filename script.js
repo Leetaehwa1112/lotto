@@ -1,7 +1,7 @@
 const landing = document.getElementById('landing');
 const quiz = document.getElementById('quiz');
 const loading = document.getElementById('loading');
-const result = document.getElementById('result');
+// const result = document.getElementById('result'); // Removed
 
 const qNumber = document.getElementById('q-number');
 const qText = document.getElementById('question-text');
@@ -67,8 +67,8 @@ function showLoading() {
 
     // Simulate Processing
     setTimeout(() => {
-        loading.classList.remove('active');
-        result.classList.add('active');
+        // loading.classList.remove('active'); // No need to remove, we redirect
+        // result.classList.add('active'); // Removed
         calculateResult();
     }, 2500);
 }
@@ -77,11 +77,7 @@ function calculateResult() {
     // Simple Logic mapping
     // E vs I
     // T vs F 
-    // This maps to 4 basic types in data.js
-    // 0: Pistachio (E, T focus)
-    // 1: Dark Choco (I, T focus)
-    // 2: Strawberry (E, F focus)
-    // 3: Matcha (I, F focus)
+    // This maps to 4 basic types
 
     let resultIndex = 0;
 
@@ -98,31 +94,18 @@ function calculateResult() {
         resultIndex = 3; // Matcha
     }
 
-    const data = infoList[resultIndex];
+    // Redirect to static page
+    const pages = [
+        'results/pistachio.html',
+        'results/dark-choco.html',
+        'results/strawberry.html',
+        'results/matcha.html'
+    ];
 
-    // Render Result
-    document.getElementById('result-title').textContent = data.name;
-    document.getElementById('result-desc').textContent = data.desc;
-
-    // Visual
-    document.getElementById('result-visual').textContent = data.img;
-    document.getElementById('result-visual').style.backgroundColor = hexToRgba(data.color, 0.2);
-    document.getElementById('result-visual').style.color = data.color;
-    document.getElementById('result-title').style.color = data.color;
-
-    // Tags
-    const tagContainer = document.getElementById('result-tags');
-    tagContainer.innerHTML = '';
-    data.tags.forEach(tag => {
-        const span = document.createElement('span');
-        span.classList.add('tag');
-        span.textContent = tag;
-        tagContainer.appendChild(span);
-    });
-
-    // Match
-    document.getElementById('match-good').textContent = data.matchGood;
-    document.getElementById('match-bad').textContent = data.matchBad;
+    // Minimal delay to ensure loading screen is seen for a bit before redirect
+    setTimeout(() => {
+        window.location.href = pages[resultIndex];
+    }, 500);
 }
 
 function restartQuiz() {
@@ -130,7 +113,7 @@ function restartQuiz() {
     // Reset Scores
     for (let key in select) select[key] = 0;
 
-    result.classList.remove('active');
+    // result.classList.remove('active'); // Removed
     landing.classList.add('active');
 }
 
