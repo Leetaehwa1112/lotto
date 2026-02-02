@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>인생역전! 로또 번호 생성기</title>
+    <style>
+        body {
+            font-family: 'Pretendard', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f2f5;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        #lotto-container {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 40px;
+            min-height: 60px;
+        }
+
+        /* 로또 공 스타일 */
+        .ball {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            animation: bounce 0.4s ease-out;
+        }
+
+        /* 번호 대역별 색상 상징 */
+        .ball-10 {
+            background-color: #fbc400;
+        }
+
+        /* 1~10 */
+        .ball-20 {
+            background-color: #69c8f2;
+        }
+
+        /* 11~20 */
+        .ball-30 {
+            background-color: #ff7272;
+        }
+
+        /* 21~30 */
+        .ball-40 {
+            background-color: #aaa;
+        }
+
+        /* 31~40 */
+        .ball-45 {
+            background-color: #b0d840;
+        }
+
+        /* 41~45 */
+
+        button {
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            background-color: #4a90e2;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            transition: transform 0.1s, background-color 0.2s;
+        }
+
+        button:hover {
+            background-color: #357abd;
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        @keyframes bounce {
+            0% {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>🍀 로또 번호 추천</h1>
+
+    <div id="lotto-container">
+    </div>
+
+    <button onclick="generateLotto()">번호 생성하기</button>
+
+    <script>
+        function generateLotto() {
+            const container = document.getElementById('lotto-container');
+            container.innerHTML = ''; // 기존 번호 초기화
+
+            const numbers = [];
+
+            // 1. 1부터 45까지 중 중복 없이 6개 추출
+            while (numbers.length < 6) {
+                const num = Math.floor(Math.random() * 45) + 1;
+                if (!numbers.includes(num)) {
+                    numbers.push(num);
+                }
+            }
+
+            // 2. 오름차순 정렬
+            numbers.sort((a, b) => a - b);
+
+            // 3. 공 만들기 및 색상 지정
+            numbers.forEach((num, index) => {
+                setTimeout(() => {
+                    const ball = document.createElement('div');
+                    ball.classList.add('ball');
+                    ball.innerText = num;
+
+                    // 번호 구간별 색상 클래스 추가
+                    if (num <= 10) ball.classList.add('ball-10');
+                    else if (num <= 20) ball.classList.add('ball-20');
+                    else if (num <= 30) ball.classList.add('ball-30');
+                    else if (num <= 40) ball.classList.add('ball-40');
+                    else ball.classList.add('ball-45');
+
+                    container.appendChild(ball);
+                }, index * 100); // 0.1초 간격으로 하나씩 등장
+            });
+        }
+    </script>
+</body>
+
+</html>
