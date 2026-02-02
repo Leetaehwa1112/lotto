@@ -1,155 +1,155 @@
-const URL = "https://teachablemachine.withgoogle.com/models/I_dkC5SeO/";
+const landing = document.getElementById('landing');
+const quiz = document.getElementById('quiz');
+const loading = document.getElementById('loading');
+const result = document.getElementById('result');
 
-let model, maxPredictions;
-let isModelLoaded = false;
+const qNumber = document.getElementById('q-number');
+const qText = document.getElementById('question-text');
+const aContainer = document.getElementById('answers-container');
+const progressFill = document.getElementById('progress-fill');
 
-// Elements
-const uploadArea = document.getElementById("upload-area");
-const imageUpload = document.getElementById("image-upload");
-const uploadPlaceholder = document.getElementById("upload-placeholder");
-const imagePreview = document.getElementById("image-preview");
-const previewImg = document.getElementById("preview-img");
-const loadingArea = document.getElementById("loading-area");
-const resultArea = document.getElementById("result-area");
-const labelContainer = document.getElementById("label-container");
+const select = {
+    E: 0, I: 0,
+    S: 0, N: 0,
+    T: 0, F: 0,
+    J: 0, P: 0
+};
 
-// Initialize
-init();
+let currentQ = 0;
 
-async function init() {
-    try {
-        const modelURL = URL + "model.json";
-        const metadataURL = URL + "metadata.json";
+function startQuiz() {
+    landing.classList.remove('active');
+    quiz.classList.add('active');
+    loadQuestion();
+}
 
-        // Load the model
-        model = await tmImage.load(modelURL, metadataURL);
-        maxPredictions = model.getTotalClasses();
-        isModelLoaded = true;
-        console.log("Model loaded successfully");
-    } catch (error) {
-        console.error("Error loading model:", error);
-        alert("모델을 불러오는 중 오류가 발생했습니다. 페이지를 새로고침 해보세요.");
+function loadQuestion() {
+    const q = qnaList[currentQ];
+    qNumber.textContent = `Q${currentQ + 1}.`;
+    qText.textContent = q.q;
+
+    // Progress
+    const progress = ((currentQ) / qnaList.length) * 100;
+    progressFill.style.width = `${progress}%`;
+
+    aContainer.innerHTML = '';
+    q.a.forEach((answer) => {
+        const btn = document.createElement('button');
+        btn.classList.add('answer-btn');
+        btn.textContent = answer.answer;
+        btn.onclick = () => {
+            handleAnswer(answer.type);
+        };
+        aContainer.appendChild(btn);
+    });
+}
+
+function handleAnswer(types) {
+    // Score update
+    types.forEach(type => {
+        select[type]++;
+    });
+
+    currentQ++;
+    if (currentQ < qnaList.length) {
+        // Animation delay for smoother feel
+        setTimeout(() => {
+            loadQuestion();
+        }, 150);
+    } else {
+        showLoading();
     }
 }
 
-// Upload Handling
-uploadArea.addEventListener("click", (e) => {
-    // Should not trigger if clicking remove button
-    if(e.target.closest('.remove-btn')) return;
-    imageUpload.click();
-});
+function showLoading() {
+    quiz.classList.remove('active');
+    loading.classList.add('active');
 
-uploadArea.addEventListener("dragover", (e) => {
-    e.preventDefault();
-    uploadArea.style.backgroundColor = "#eef2ff";
-    uploadArea.style.borderColor = "#6366f1";
-});
-
-uploadArea.addEventListener("dragleave", () => {
-    uploadArea.style.backgroundColor = "";
-    uploadArea.style.borderColor = "";
-});
-
-uploadArea.addEventListener("drop", (e) => {
-    e.preventDefault();
-    uploadArea.style.backgroundColor = "";
-    uploadArea.style.borderColor = "";
-    
-    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-        const file = e.dataTransfer.files[0];
-        handleFile(file);
-    }
-});
-
-imageUpload.addEventListener("change", (e) => {
-    if (e.target.files && e.target.files[0]) {
-        handleFile(e.target.files[0]);
-    }
-});
-
-function handleFile(file) {
-    if (!file.type.startsWith("image/")) {
-        alert("이미지 파일만 업로드할 수 있습니다.");
-        return;
-    }
-
-    const reader = new FileReader();
-    reader.onload = (e) => {
-        previewImg.src = e.target.result;
-        uploadPlaceholder.hidden = true;
-        imagePreview.hidden = false;
-        resultArea.hidden = true;
-        
-        // Predict immediately after loading
-        predict();
-    };
-    reader.readAsDataURL(file);
+    // Simulate Processing
+    setTimeout(() => {
+        loading.classList.remove('active');
+        result.classList.add('active');
+        calculateResult();
+    }, 2500);
 }
 
-function removeImage() {
-    imageUpload.value = "";
-    previewImg.src = "#";
-    imagePreview.hidden = true;
-    uploadPlaceholder.hidden = false;
-    resultArea.hidden = true;
-    labelContainer.innerHTML = "";
-}
+function calculateResult() {
+    // Simple Logic mapping
+    // E vs I
+    // T vs F 
+    // This maps to 4 basic types in data.js
+    // 0: Pistachio (E, T focus)
+    // 1: Dark Choco (I, T focus)
+    // 2: Strawberry (E, F focus)
+    // 3: Matcha (I, F focus)
 
-async function predict() {
-    if (!isModelLoaded) {
-        loadingArea.hidden = false;
-        // Wait for model... simpler logic: just alert or retry
-        await init(); 
-        if(!isModelLoaded) return;
+    let resultIndex = 0;
+
+    const isE = select.E >= select.I;
+    const isT = select.T >= select.F;
+
+    if (isE && isT) {
+        resultIndex = 0; // Pistachio
+    } else if (!isE && isT) {
+        resultIndex = 1; // Dark Choco
+    } else if (isE && !isT) {
+        resultIndex = 2; // Strawberry
+    } else {
+        resultIndex = 3; // Matcha
     }
 
-    loadingArea.hidden = false;
-    
-    // Simulate a short delay for UX (so user sees "Analyzing...")
-    // Also gives time for the image to render completely
-    setTimeout(async () => {
-        try {
-            const prediction = await model.predict(previewImg);
-            displayResult(prediction);
-        } catch (error) {
-            console.error(error);
-            alert("분석 중 오류가 발생했습니다.");
-        } finally {
-            loadingArea.hidden = true;
-        }
-    }, 500);
+    const data = infoList[resultIndex];
+
+    // Render Result
+    document.getElementById('result-title').textContent = data.name;
+    document.getElementById('result-desc').textContent = data.desc;
+
+    // Visual
+    document.getElementById('result-visual').textContent = data.img;
+    document.getElementById('result-visual').style.backgroundColor = hexToRgba(data.color, 0.2);
+    document.getElementById('result-visual').style.color = data.color;
+    document.getElementById('result-title').style.color = data.color;
+
+    // Tags
+    const tagContainer = document.getElementById('result-tags');
+    tagContainer.innerHTML = '';
+    data.tags.forEach(tag => {
+        const span = document.createElement('span');
+        span.classList.add('tag');
+        span.textContent = tag;
+        tagContainer.appendChild(span);
+    });
+
+    // Match
+    document.getElementById('match-good').textContent = data.matchGood;
+    document.getElementById('match-bad').textContent = data.matchBad;
 }
 
-function displayResult(prediction) {
-    // Sort predictions by probability
-    prediction.sort((a, b) => b.probability - a.probability);
+function restartQuiz() {
+    currentQ = 0;
+    // Reset Scores
+    for (let key in select) select[key] = 0;
 
-    labelContainer.innerHTML = "";
-    
-    for (let i = 0; i < maxPredictions; i++) {
-        const classPrediction = prediction[i].className;
-        const probability = prediction[i].probability.toFixed(2);
-        const percentage = Math.round(probability * 100) + "%";
-        
-        const resultItem = document.createElement("div");
-        resultItem.className = "result-item";
-        
-        resultItem.innerHTML = `
-            <div class="label-container">
-                <span class="label-name">${titleCase(classPrediction)}</span>
-                <span class="label-prob">${percentage}</span>
-            </div>
-            <div class="bar-container">
-                <div class="bar-fill" style="width: ${percentage}; opacity: ${0.3 + (probability * 0.7)}"></div>
-            </div>
-        `;
-        
-        labelContainer.appendChild(resultItem);
+    result.classList.remove('active');
+    landing.classList.add('active');
+}
+
+function shareResult() {
+    if (navigator.share) {
+        navigator.share({
+            title: '두쫀쿠 성격 테스트',
+            text: '나와 어울리는 두바이 쫀득 쿠키는?',
+            url: window.location.href,
+        });
+    } else {
+        alert('링크가 복사되었습니다!');
+        navigator.clipboard.writeText(window.location.href);
     }
-    
-    resultArea.hidden = false;
 }
 
-function titleCase(str) {
-    return str.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
+function hexToRgba(hex, alpha) {
+    const r = parseInt(hex.substring(1, 3), 16);
+    const g = parseInt(hex.substring(3, 5), 16);
+    const b = parseInt(hex.substring(5, 7), 16);
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
