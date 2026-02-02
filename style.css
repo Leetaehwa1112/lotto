@@ -27,9 +27,14 @@ body {
     min-height: 100vh;
     display: flex;
     justify-content: center;
-    align-items: center;
-    overflow: hidden;
+    align-items: flex-start;
+    /* Changed from center to allow scroll from top */
+    overflow-y: auto;
+    /* Allow dragging/scrolling */
+    overflow-x: hidden;
     position: relative;
+    padding-top: 20px;
+    padding-bottom: 20px;
 }
 
 /* Background Shapes */
@@ -363,6 +368,7 @@ h1 {
     font-size: 1rem;
     color: var(--primary);
 }
+
 /* Layout additions for AdSense Structure */
 
 /* Header */
@@ -382,7 +388,8 @@ h1 {
 
 .header-inner {
     width: 100%;
-    max-width: 600px; /* Slightly wider than container */
+    max-width: 600px;
+    /* Slightly wider than container */
     padding: 0 20px;
     display: flex;
     justify-content: space-between;
@@ -409,10 +416,14 @@ h1 {
 
 /* Main Container Adjustment */
 .main-container {
-    margin-top: 80px; /* Space for fixed header */
-    height: auto !important; /* Allow scroll for long content */
-    overflow: visible !important; /* Allow scroll */
-    min-height: calc(100vh - 140px); /* Adjust for header/footer */
+    margin-top: 80px;
+    /* Space for fixed header */
+    height: auto !important;
+    /* Allow scroll for long content */
+    overflow: visible !important;
+    /* Allow scroll */
+    min-height: calc(100vh - 140px);
+    /* Adjust for header/footer */
     margin-bottom: 60px;
 }
 
@@ -420,7 +431,7 @@ h1 {
 .content-section {
     padding: 40px 30px;
     background: #FAFAFA;
-    border-top: 1px solid rgba(0,0,0,0.05);
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .content-section article h2 {
@@ -482,7 +493,7 @@ h1 {
     background: #3E2723;
     padding: 40px 20px;
     text-align: center;
-    color: rgba(255,255,255,0.7);
+    color: rgba(255, 255, 255, 0.7);
     margin-top: auto;
 }
 
@@ -514,7 +525,8 @@ h1 {
 
 /* Result Page Specifics */
 .result-page-body {
-    background: var(--bg-start); /* Simple background mainly */
+    background: var(--bg-start);
+    /* Simple background mainly */
     flex-direction: column;
     height: auto;
     overflow-y: auto;
@@ -523,6 +535,7 @@ h1 {
 .result-container {
     margin-top: 80px;
     margin-bottom: 40px;
-    max-width: 600px; /* Wider for reading */
+    max-width: 600px;
+    /* Wider for reading */
     padding-bottom: 60px;
 }
