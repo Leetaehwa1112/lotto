@@ -1,7 +1,6 @@
 const landing = document.getElementById('landing');
 const quiz = document.getElementById('quiz');
 const loading = document.getElementById('loading');
-// const result = document.getElementById('result'); // Removed
 
 const qNumber = document.getElementById('q-number');
 const qText = document.getElementById('question-text');
@@ -33,12 +32,17 @@ function loadQuestion() {
     progressFill.style.width = `${progress}%`;
 
     aContainer.innerHTML = '';
-    q.a.forEach((answer) => {
+    q.a.forEach((answer, index) => {
         const btn = document.createElement('button');
         btn.classList.add('answer-btn');
         btn.textContent = answer.answer;
+        btn.style.animationDelay = `${index * 0.1}s`;
         btn.onclick = () => {
-            handleAnswer(answer.type);
+            // Add selected animation
+            btn.classList.add('selected');
+            setTimeout(() => {
+                handleAnswer(answer.type);
+            }, 200);
         };
         aContainer.appendChild(btn);
     });
@@ -67,44 +71,26 @@ function showLoading() {
 
     // Simulate Processing
     setTimeout(() => {
-        // loading.classList.remove('active'); // No need to remove, we redirect
-        // result.classList.add('active'); // Removed
         calculateResult();
     }, 2500);
 }
 
 function calculateResult() {
-    // Simple Logic mapping
-    // E vs I
-    // T vs F 
-    // This maps to 4 basic types
-
-    let resultIndex = 0;
-
+    // Calculate all 4 MBTI dimensions
     const isE = select.E >= select.I;
+    const isS = select.S >= select.N;
     const isT = select.T >= select.F;
+    const isJ = select.J >= select.P;
 
-    if (isE && isT) {
-        resultIndex = 0; // Pistachio
-    } else if (!isE && isT) {
-        resultIndex = 1; // Dark Choco
-    } else if (isE && !isT) {
-        resultIndex = 2; // Strawberry
-    } else {
-        resultIndex = 3; // Matcha
-    }
+    // Build MBTI code
+    const mbti = (isE ? 'E' : 'I') + (isS ? 'S' : 'N') + (isT ? 'T' : 'F') + (isJ ? 'J' : 'P');
 
-    // Redirect to static page
-    const pages = [
-        'results/pistachio.html',
-        'results/dark-choco.html',
-        'results/strawberry.html',
-        'results/matcha.html'
-    ];
+    // Get result page URL
+    const resultPage = resultPages[mbti];
 
-    // Minimal delay to ensure loading screen is seen for a bit before redirect
+    // Minimal delay to ensure loading screen is seen
     setTimeout(() => {
-        window.location.href = pages[resultIndex];
+        window.location.href = resultPage;
     }, 500);
 }
 
@@ -113,7 +99,6 @@ function restartQuiz() {
     // Reset Scores
     for (let key in select) select[key] = 0;
 
-    // result.classList.remove('active'); // Removed
     landing.classList.add('active');
 }
 
