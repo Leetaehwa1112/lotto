@@ -17,9 +17,18 @@ const select = {
 let currentQ = 0;
 
 function startQuiz() {
-    landing.classList.remove('active');
-    quiz.classList.add('active');
-    loadQuestion();
+    // Add loading state to button
+    const startBtn = document.getElementById('start-btn');
+    if (startBtn) {
+        startBtn.classList.add('loading');
+    }
+
+    // Short delay for visual feedback
+    setTimeout(() => {
+        landing.classList.remove('active');
+        quiz.classList.add('active');
+        loadQuestion();
+    }, 150);
 }
 
 function loadQuestion() {

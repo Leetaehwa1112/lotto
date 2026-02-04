@@ -137,22 +137,47 @@
     </div>
 
     <main class="container main-container">
-        <!-- TL;DR Summary for AI (Answer First Strategy) -->
-        <aside class="tldr-summary"
-            style="background: linear-gradient(135deg, #fff9e6, #fff3cd); border-radius: 16px; padding: 20px; margin-bottom: 30px; border-left: 4px solid #f5a623;">
-            <strong>📌 한줄 요약:</strong> 두쫀쿠 성격 테스트는 2026년 트렌드 디저트 '두바이 쫀득 쿠키'를 테마로 한 MBTI 기반 심리 테스트입니다. 12개 질문으로 16가지 쿠키
-            유형 중 나와 닮은 유형을 찾아보세요. <strong>참여자의 92%가 결과에 공감</strong>했습니다.
-        </aside>
-
-        <!-- Landing Section -->
+        <!-- Landing Section - Optimized for Quick Back Prevention -->
         <section id="landing" class="screen active">
             <div class="logo-area">
-                <span class="badge">🍪 Dujjonku Test</span>
+                <span class="badge">🍪 무료 테스트 • 2분 소요</span>
                 <h1>나는 어떤<br>두쫀쿠일까?</h1>
-                <p class="desc">2026년 대한민국을 뒤흔든 두바이 쫀득 쿠키!<br>피스타치오, 카다이프, 마시멜로, 초코 쉘 중<br>당신과 가장 닮은 유형은?</p>
+
+                <!-- Clear Value Proposition -->
+                <p class="value-prop"
+                    style="font-size: 1.1rem; color: var(--primary); font-weight: 600; margin: 16px 0 8px;">12개 질문으로
+                    알아보는 나의 성격 유형</p>
+                <p class="desc" style="margin-bottom: 0;">피스타치오, 카다이프, 마시멜로, 초코 쉘 중<br>당신과 닮은 두쫀쿠 유형을 찾아드려요!</p>
+
+                <!-- Social Proof -->
+                <p style="margin-top: 12px; font-size: 0.9rem; color: var(--text-sub);">👥 <strong>12,500명+</strong> 참여
+                    • 결과 공감률 <strong>92%</strong></p>
             </div>
+
+            <!-- Primary CTA - Top Position -->
             <div class="start-btn-wrapper">
-                <button class="btn-primary" onclick="startQuiz()">테스트 시작하기</button>
+                <button class="btn-primary" id="start-btn" onclick="startQuiz()">
+                    <span class="btn-text">지금 바로 시작하기</span>
+                    <span class="btn-loading" style="display: none;">⏳ 로딩중...</span>
+                </button>
+                <p style="text-align: center; margin-top: 10px; font-size: 0.8rem; color: var(--text-sub);">✓ 가입 없이 바로
+                    시작</p>
+            </div>
+
+            <!-- Result Preview - What You'll Get -->
+            <div class="result-preview" style="margin-top: 32px; text-align: center;">
+                <p style="font-size: 0.9rem; color: var(--text-sub); margin-bottom: 12px;">이런 결과를 받을 수 있어요 👇</p>
+                <div style="display: flex; justify-content: center; gap: 8px; flex-wrap: wrap;">
+                    <span
+                        style="background: #E8F5E9; color: #2E7D32; padding: 6px 12px; border-radius: 20px; font-size: 0.8rem;">🥜
+                        피스타치오 커맨더</span>
+                    <span
+                        style="background: #FFF3E0; color: #E65100; padding: 6px 12px; border-radius: 20px; font-size: 0.8rem;">🥐
+                        카다이프 아키텍트</span>
+                    <span
+                        style="background: #FCE4EC; color: #C2185B; padding: 6px 12px; border-radius: 20px; font-size: 0.8rem;">🍡
+                        마시멜로 멘토</span>
+                </div>
             </div>
         </section>
 

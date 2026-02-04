@@ -929,3 +929,116 @@ h1 {
         transform: translateX(-50%) translateY(-10px);
     }
 }
+
+/* ========================================
+   UX IMPROVEMENTS - Rage/Dead Click Prevention
+   ======================================== */
+
+/* Button Loading State */
+.btn-primary.loading {
+    pointer-events: none;
+    opacity: 0.8;
+}
+
+.btn-primary.loading .btn-text {
+    display: none;
+}
+
+.btn-primary.loading .btn-loading {
+    display: inline !important;
+}
+
+/* Click Feedback - Active State */
+.btn-primary:active {
+    transform: scale(0.95) !important;
+    box-shadow: 0 4px 12px rgba(93, 64, 55, 0.3) !important;
+}
+
+.btn-secondary:active {
+    transform: scale(0.95) !important;
+}
+
+/* Remove confusing hover from non-clickable elements */
+.tag {
+    cursor: default;
+    pointer-events: none;
+}
+
+.tag:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+/* Match items are informational, not clickable */
+.match-item {
+    cursor: default;
+}
+
+.match-item:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+/* Clear distinction for clickable vs non-clickable */
+a,
+button,
+.answer-btn {
+    cursor: pointer;
+}
+
+/* Non-link text should not look clickable */
+.desc,
+.subtitle,
+p:not(a),
+.result-desc {
+    cursor: default;
+}
+
+/* Answer button ripple effect on click */
+.answer-btn {
+    position: relative;
+    overflow: hidden;
+}
+
+.answer-btn::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(139, 195, 74, 0.3);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.3s, height 0.3s;
+}
+
+.answer-btn:active::after {
+    width: 200%;
+    height: 200%;
+}
+
+/* Result preview tags are not clickable */
+.result-preview span {
+    cursor: default;
+    transition: none;
+}
+
+/* Footer links ARE clickable - keep underline on hover */
+.footer-links a {
+    cursor: pointer;
+}
+
+/* Header nav links ARE clickable */
+.header-inner nav a {
+    cursor: pointer;
+}
+
+/* Logo in header - make it look less like a button */
+.header-inner .logo {
+    cursor: default;
+}
+
+.header-inner .logo:hover {
+    transform: none;
+}
